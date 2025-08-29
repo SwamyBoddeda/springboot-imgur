@@ -22,10 +22,6 @@ A Spring Boot application that integrates with Imgur API for image management, w
 
 3. Set your Imgur Client-ID:
 
-   In `src/main/java/com/example/service/ImageService.java`, replace `YOUR_CLIENT_ID_HERE` with your actual Imgur Client-ID.
-
-   (Get one from https://api.imgur.com/oauth2/addclient)
-
 4. Build and run:
 
    ```bash
