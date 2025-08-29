@@ -8,14 +8,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class UserControllerTest {
 
     @Autowired
@@ -34,7 +36,8 @@ public class UserControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(user)))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("User registered successfully")));
+                .andExpect(jsonPath("$.username").value("testUser"))
+                .andExpect(jsonPath("$.email").value("test@example.com"));
     }
 
     @Test
@@ -57,12 +60,12 @@ public class UserControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"username\":\"loginUser\",\"password\":\"password\"}"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.token").exists());
+                .andExpect(jsonPath("$.token").value(notNullValue()));
     }
 
     @Test
     void loginUser_invalidPassword() throws Exception {
-        User user = new User(null, "wrongPassUser", "wrong@example.com");
+        User user = new User("wrongPassUser", "password", "wrong@example.com");
         userRepository.save(user);
 
         mockMvc.perform(post("/api/users/login")

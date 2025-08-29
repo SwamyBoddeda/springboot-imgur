@@ -41,7 +41,7 @@ public class UserController {
         if (user == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(user.getImageUrls());
+        return ResponseEntity.ok(user.getImages());
     }
 
 

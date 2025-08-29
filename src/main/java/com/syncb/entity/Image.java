@@ -17,6 +17,10 @@ public class Image {
     private String link;
     private Instant createdAt = Instant.now();
 
+    public Image(String url) {
+        this.link = url;
+    }
+
     public User getUser() {
         return user;
     }

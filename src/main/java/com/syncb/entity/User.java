@@ -2,6 +2,7 @@ package com.syncb.entity;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -19,10 +20,8 @@ public class User {
     private String password;
     private String email;
 
-    @ElementCollection
-    @CollectionTable(name = "user_image_urls", joinColumns = @JoinColumn(name = "user_id"))
-    @Column(name = "image_url")
-    private List<String> imageUrls;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Image> images = new ArrayList<>();
 
     public User(String username, String password, String email) {
         this.username = username;
@@ -46,6 +45,6 @@ public class User {
 
     public void setEmail(String email) { this.email = email; }
 
-    public List<String> getImageUrls() { return imageUrls; }
-    public void setImageUrls(List<String> imageUrls) { this.imageUrls = imageUrls; }
+    public List<Image> getImages() { return images; }
+    public void setImages(List<Image> images) { this.images = images; }
 }

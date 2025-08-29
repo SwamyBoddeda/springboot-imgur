@@ -1,6 +1,7 @@
 package com.syncb.service;
 
 import com.syncb.config.JwtUtil;
+import com.syncb.entity.Image;
 import com.syncb.entity.User;
 import com.syncb.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +51,7 @@ public class UserService {
     public void addImageUrl(Long userId, String url) {
         User user = userRepository.findById(userId).orElse(null);
         if (user != null) {
-            user.getImageUrls().add(url);
+            user.getImages().add(new Image(url));
             userRepository.save(user);
         }
     }
@@ -58,7 +59,7 @@ public class UserService {
     public boolean removeImageUrl(Long userId, String url) {
         User user = userRepository.findById(userId).orElse(null);
         if (user != null) {
-            boolean removed = user.getImageUrls().remove(url);
+            boolean removed = user.getImages().remove(new Image(url));
             if (removed) userRepository.save(user);
             return removed;
         }

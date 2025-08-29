@@ -26,7 +26,7 @@ public class ImageService {
    public Image upload(String username, MultipartFile file, String title) throws IOException {
         User user = userRepository.findByUsername(username).orElseThrow();
         var data = imgurApiClient.upload(file.getBytes(), title);
-        Image img = new Image();
+        Image img = new Image(data.link);
         img.setUser(user);
         img.setTitle(title);
         img.setImgurId(data.id);
